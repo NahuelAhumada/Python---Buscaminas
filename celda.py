@@ -9,5 +9,7 @@ class Celda:
         return self.clickeada
     def getBandera_colocada(self):
         return self.bandera_colocada
+    def colocarMina(self):
+        self.contiene_mina=True
     
 
