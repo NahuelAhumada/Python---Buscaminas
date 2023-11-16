@@ -14,4 +14,5 @@ class Tablero():
             self.matriz.append(fila)
     def getDimensiones(self):
         return self.tamanio
-
+    def getCelda(self,i,j):
+        return self.matriz[i][j]
