@@ -9,7 +9,7 @@ class Juego():
         self.tablero=tablero
         self.tamanioPantalla=tamanioPantalla
         self.tamanioBloque = (tamanioPantalla[0] // self.tablero.getDimensiones()[1], self.tamanioPantalla[1] // self.tablero.getDimensiones()[0])
-        self.imagenes = []
+        self.imagenes = {}
         self.cargarImagenes()
 
     def cargarImagenes(self):
@@ -18,13 +18,13 @@ class Juego():
                 continue
             image = pygame.image.load(r"img/"+nombre_arhivo)
             image=pygame.transform.scale(image,(self.tamanioBloque[0],self.tamanioBloque[1]))
-            self.imagenes.append(image)
+            self.imagenes[nombre_arhivo.split(".")[0]]= image
 
     
 
     def obtenerImagen(self, celda):
-        numero= 12 if celda.getContiene_mina() else 10
-        return self.imagenes[numero]
+        archivo = "unclicked-bomb" if celda.getContiene_mina() else "empty-block"
+        return self.imagenes[archivo]
     def dibujar(self):
         tupla = (0,0)
         for fila in range(self.tablero.getDimensiones()[0]):
