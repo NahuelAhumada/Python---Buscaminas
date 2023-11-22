@@ -22,14 +22,16 @@ class Juego():
 
     
 
-    def obtenerImagen(self, celda):
-        archivo = "unclicked-bomb" if celda.getContiene_mina() else "empty-block"
+    def obtenerImagen(self, celda, primer_click):
+        archivo = "empty-block"
+        if primer_click:
+            archivo ="unclicked-bomb" if celda.getContiene_mina() else str(celda.getBombas_alrededor())
         return self.imagenes[archivo]
-    def dibujar(self):
+    def dibujar(self, minas_colocadas):
         tupla = (0,0)
         for fila in range(self.tablero.getDimensiones()[0]):
             for columna in range(self.tablero.getDimensiones()[1]):
-                imagen=self.obtenerImagen(self.tablero.getCelda(fila, columna))
+                imagen=self.obtenerImagen(self.tablero.getCelda(fila, columna),minas_colocadas)
                 self.pantalla.blit(imagen, tupla)
                 tupla = (tupla[0]+self.tamanioBloque[0], tupla[1])
             tupla = (0,tupla[1]+self.tamanioBloque[0])
@@ -48,6 +50,6 @@ class Juego():
                     if not self.minas_colocadas:
                         self.tablero.colocarMinas(pos_tablero[0],pos_tablero[1])
                         self.minas_colocadas=True
-            self.dibujar()
+            self.dibujar(self.minas_colocadas)
             pygame.display.flip()
         pygame.quit()

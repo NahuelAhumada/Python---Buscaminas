@@ -22,6 +22,7 @@ class Tablero():
                 celda = self.getCelda(fila,columna)
                 vecinos = self.obtenerListaDeVecinos((fila, columna))
                 celda.setVecinos(vecinos)
+                #print(celda.getBombas_alrededor())
 
     def obtenerListaDeVecinos(self, indice):
         vecinos=[]
@@ -29,9 +30,10 @@ class Tablero():
             for j in range(-1,2):
                 pos_x=indice[0]+i
                 pos_y=indice[1]+j
-                if not (pos_x<=0 or pos_x<self.tamanio[0] or pos_y>=0 or pos_y<self.tamanio[0]):
-                    if i!=0 and j!=0:
+                if not (pos_x<0 or pos_x>=self.tamanio[0] or pos_y<0 or pos_y>=self.tamanio[0]):
+                    if not(i==0 and j==0):
                         vecinos.append(self.matriz[pos_x][pos_y])
+        print(len(vecinos))
         return vecinos
 
     def getCelda(self,i,j):
@@ -46,3 +48,4 @@ class Tablero():
             if not celda.getContiene_mina() and not (coord_x == pos_x and coord_y == pos_y):
                 celda.colocarMina()
                 minas_colocadas+=1
+        self.colocarVecinos()
