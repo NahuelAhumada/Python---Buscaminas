@@ -4,6 +4,8 @@ class Tablero():
     #Pre: Recibe un tamanio MxN en formato de tupla (M,N)
     def __init__(self, tamanio):
         self.tamanio = tamanio
+        self.ha_perdido = False
+        self.ha_ganado = False
         self.crearTablero()
     def crearTablero(self):
         self.matriz = []
@@ -49,3 +51,13 @@ class Tablero():
                 celda.colocarMina()
                 minas_colocadas+=1
         self.colocarVecinos()
+    def hacer_click(self, indice, click_derecho):
+        celda=self.getCelda(indice[0],indice[1])
+        if celda.getClickeada() or (celda.getBandera_colocada() and not click_derecho):
+            return
+        if(click_derecho):
+            celda.click_bandera()
+            return
+        celda.hacer_click_izquierdo()
+        if celda.getContiene_mina():
+            self.ha_perdido=True

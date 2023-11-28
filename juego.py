@@ -22,10 +22,13 @@ class Juego():
 
     
 
-    def obtenerImagen(self, celda, primer_click):
+    def obtenerImagen(self, celda, minas_colocadas):
         archivo = "empty-block"
-        if primer_click:
-            archivo ="unclicked-bomb" if celda.getContiene_mina() else str(celda.getBombas_alrededor())
+        if celda.getBandera_colocada():
+            archivo= "flag"
+        else:
+            if minas_colocadas:
+                archivo ="unclicked-bomb" if celda.getContiene_mina() else str(celda.getBombas_alrededor())
         return self.imagenes[archivo]
     def dibujar(self, minas_colocadas):
         tupla = (0,0)
@@ -36,20 +39,25 @@ class Juego():
                 tupla = (tupla[0]+self.tamanioBloque[0], tupla[1])
             tupla = (0,tupla[1]+self.tamanioBloque[0])
     
-    def obtener_coordenadas(self, pos):
-        return (pos[1] // self.tamanioBloque[1] ,pos[0] // self.tamanioBloque[0] )
+    def hacer_click(self, pos, click_derecho):
+        indice = (pos[1] // self.tamanioBloque[1] ,pos[0] // self.tamanioBloque[0] )
+        self.tablero.hacer_click(indice, click_derecho)
     def correr(self):
         flag = True
         while flag:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     flag = False
-                if event.type == pygame.MOUSEBUTTONUP:
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    pos_tablero=self.obtener_coordenadas(pos)
+                    click_derecho=pygame.mouse.get_pressed()[2]
+                    self.hacer_click(pos,click_derecho)
+                    """
+                    pos_tablero=self.hacer_click(pos)
                     if not self.minas_colocadas:
                         self.tablero.colocarMinas(pos_tablero[0],pos_tablero[1])
                         self.minas_colocadas=True
+                    """
             self.dibujar(self.minas_colocadas)
             pygame.display.flip()
         pygame.quit()
