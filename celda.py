@@ -4,6 +4,7 @@ class Celda:
         self.click_izquierdo = False
         self.contiene_mina= False
         self.bandera_colocada = False
+        self.vecinos=[]
     def getBombas_alrededor(self):
         return self.bombas_alrededor
     def getContiene_mina(self):

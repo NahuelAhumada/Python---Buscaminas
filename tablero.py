@@ -58,7 +58,7 @@ class Tablero():
         if(click_derecho):
             celda.click_bandera()
             return
-        celda.hacer_click_izquierdo()
+        celda.hacer_click_izquiedo()
         if celda.getContiene_mina():
             self.ha_perdido=True
             return
