@@ -17,6 +17,8 @@ class Celda:
     def setVecinos(self,vecinos):
         self.vecinos = vecinos
         self.setBombas_alredador()
+    def getVecinos(self):
+        return self.vecinos
     def setBombas_alredador(self):
         self.bombas_alrededor=0
         for vecino in self.vecinos:

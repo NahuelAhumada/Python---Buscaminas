@@ -41,7 +41,8 @@ class Juego():
     
     def hacer_click(self, pos, click_derecho):
         indice = (pos[1] // self.tamanioBloque[1] ,pos[0] // self.tamanioBloque[0] )
-        self.tablero.hacer_click(indice, click_derecho)
+        celda=self.tablero.getCelda(indice[0],indice[1])
+        self.tablero.hacer_click(celda, click_derecho)
     def correr(self):
         flag = True
         while flag:
