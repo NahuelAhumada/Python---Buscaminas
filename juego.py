@@ -1,6 +1,6 @@
 import pygame
 import os
-
+from time import sleep
 class Juego():
     #Pre: Recibe como parametro un objeto Tablero y una tupla de 2 valores numericos
     #representando las dimensiones en pixeles de la pantalla(ancho, alto) 
@@ -45,6 +45,10 @@ class Juego():
     def hacer_click(self, indice, click_derecho):
         celda=self.tablero.getCelda(indice[0],indice[1])
         self.tablero.hacer_click(celda, click_derecho)
+    def ganar(self):
+        sonido = pygame.mixer.Sound('winning.wav')
+        sonido.play()
+        sleep(3)
     def correr(self):
         flag = True
         while flag:
@@ -63,5 +67,6 @@ class Juego():
             self.dibujar()
             pygame.display.flip()
             if self.tablero.checkear_victoria():
+                    self.ganar()
                     flag = False
         pygame.quit()
