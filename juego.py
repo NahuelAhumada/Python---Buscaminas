@@ -2,6 +2,8 @@ import pygame
 import os
 
 class Juego():
+    #Pre: Recibe como parametro un objeto Tablero y una tupla de 2 valores numericos
+    #representando las dimensiones en pixeles de la pantalla(ancho, alto) 
     def __init__(self, tablero, tamanioPantalla):
         pygame.init()
         self.minas_colocadas=False
@@ -11,7 +13,8 @@ class Juego():
         self.tamanioBloque = (tamanioPantalla[0] // self.tablero.getDimensiones()[1], self.tamanioPantalla[1] // self.tablero.getDimensiones()[0])
         self.imagenes = {}
         self.cargarImagenes()
-
+    #Pos: Lee los archivos de la carpeta "img" y guarda las imagenes dentro del diccionario
+    # usando como clave el nombre del archivo 
     def cargarImagenes(self):
         for nombre_arhivo in os.listdir("img"):
             if (not nombre_arhivo.endswith(".png")):
@@ -20,8 +23,8 @@ class Juego():
             image=pygame.transform.scale(image,(self.tamanioBloque[0],self.tamanioBloque[1]))
             self.imagenes[nombre_arhivo.split(".")[0]]= image
 
-    
-
+    #Pre: Recibe como parametro una instancia de la clase Celda
+    #Pos: Obtinen del diccionario la imagen correspondiente de dicha celda
     def obtenerImagen(self, celda):
         archivo = None
         if celda.getClickeada():
@@ -29,6 +32,7 @@ class Juego():
         else:        
             archivo ="flag" if celda.getBandera_colocada() else "empty-block"
         return self.imagenes[archivo]
+    
     def dibujar(self):
         tupla = (0,0)
         for fila in range(self.tablero.getDimensiones()[0]):
@@ -48,14 +52,16 @@ class Juego():
                 if event.type == pygame.QUIT:
                     flag = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    click_derecho=pygame.mouse.get_pressed()[2]
-                    indice = (pos[1] // self.tamanioBloque[1] ,pos[0] // self.tamanioBloque[0] )
-                    if not self.minas_colocadas:
-                        self.tablero.colocarMinas(indice[0],indice[1])
-                        self.minas_colocadas=True
-                    self.hacer_click(indice,click_derecho)
-                    
+                    if not(self.tablero.getHa_perdido()):
+                        pos = pygame.mouse.get_pos()
+                        click_derecho=pygame.mouse.get_pressed()[2]
+                        indice = (pos[1] // self.tamanioBloque[1] ,pos[0] // self.tamanioBloque[0] )
+                        if not self.minas_colocadas:
+                            self.tablero.colocarMinas(indice[0],indice[1])
+                            self.minas_colocadas=True
+                        self.hacer_click(indice,click_derecho)   
             self.dibujar()
             pygame.display.flip()
+            if self.tablero.checkear_victoria():
+                    flag = False
         pygame.quit()

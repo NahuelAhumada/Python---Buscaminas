@@ -4,9 +4,10 @@ class Tablero():
     #Pre: Recibe un tamanio MxN en formato de tupla (M,N)
     def __init__(self, tamanio):
         self.tamanio = tamanio
+        self.cantidad_celdas_vacias = tamanio[0]*tamanio[1] - 10
+        self.celdas_clickeadas = 0
         self.ha_perdido = False
-        self.num_banderas_colocadas = 0
-        self.num_banderas_sobre_bombas = 0
+        self.ha_ganado = False
         self.crearTablero()
     def crearTablero(self):
         self.matriz = []
@@ -18,14 +19,16 @@ class Tablero():
             self.matriz.append(fila)
     def getDimensiones(self):
         return self.tamanio
-    
+    def getHa_perdido(self):
+        return self.ha_perdido
+    def checkear_victoria(self):
+        return self.cantidad_celdas_vacias == self.celdas_clickeadas
     def colocarVecinos(self):
         for fila in range(self.tamanio[0]):
             for columna in range(self.tamanio[1]):
                 celda = self.getCelda(fila,columna)
                 vecinos = self.obtenerListaDeVecinos((fila, columna))
                 celda.setVecinos(vecinos)
-                #print(celda.getBombas_alrededor())
 
     def obtenerListaDeVecinos(self, indice):
         vecinos=[]
@@ -36,7 +39,6 @@ class Tablero():
                 if not (pos_x<0 or pos_x>=self.tamanio[0] or pos_y<0 or pos_y>=self.tamanio[0]):
                     if not(i==0 and j==0):
                         vecinos.append(self.matriz[pos_x][pos_y])
-        print(len(vecinos))
         return vecinos
 
     def getCelda(self,i,j):
@@ -62,12 +64,10 @@ class Tablero():
         if celda.getContiene_mina():
             self.ha_perdido=True
             return
-        #self.num_banderas_colocadas+=1
-
+        else:
+            self.celdas_clickeadas += 1
         if (celda.getBombas_alrededor()!=0):
             return
         for vecino in celda.getVecinos():
             if (not vecino.getContiene_mina() and not vecino.getClickeada()):
                 self.hacer_click(vecino, False)
-    #def get_ha_ganado(self):
-        #return self.num_banderas_sobre_bombas==10
