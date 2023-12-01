@@ -6,6 +6,7 @@ class Juego():
     #representando las dimensiones en pixeles de la pantalla(ancho, alto) 
     def __init__(self, tablero, tamanioPantalla):
         pygame.init()
+        self.fuente_de_texto = pygame.font.SysFont("Arial",36)
         self.minas_colocadas=False
         self.pantalla=pygame.display.set_mode(tamanioPantalla)
         self.tablero=tablero
@@ -46,8 +47,11 @@ class Juego():
         celda=self.tablero.getCelda(indice[0],indice[1])
         self.tablero.hacer_click(celda, click_derecho)
     def ganar(self):
+        texto=self.fuente_de_texto.render("Has ganado",True,(0,255,255))
+        self.pantalla.blit(texto, (242,315))
         sonido = pygame.mixer.Sound('winning.wav')
         sonido.play()
+        pygame.display.flip()
         sleep(3)
     def correr(self):
         flag = True
